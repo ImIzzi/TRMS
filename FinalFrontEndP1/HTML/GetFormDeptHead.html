@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Form API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" 
+   integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">   
+
+    <style>
+        td {
+            border: 1px solid black;
+            padding: 5px;
+        } 
+        
+        #employeeTable {
+            /* margin-left: 20px; */
+            margin: 20px 15px 10px 20px;
+        }
+
+        #employeeHeader {
+            margin-left: 15px;
+        }
+
+    </style>  
+</head>
+
+<body>
+
+    <h1 id="employeeHeader">Employee Forms</h1>
+    <!-- <button onclick="getForms()">Get Form</button> -->
+
+    <label style="margin-left: 20px;">Employee ID:</label>
+    <input type="number" id="idInput" min="1">
+    <button onclick="getFormsById()">Get Forms By Employee ID</button>
+
+    <table table table id="employeeTable" style="border: 1px solid black; border-collapse: collapse;">
+        <tr>
+            <tr>
+                <th>Information</th>
+                <th>Inputs</th>
+            </tr>
+            <tr>
+                <td>Form ID</td>
+                <td id="formId">-</td>
+            </tr>
+            <tr>
+                <td>First Name</td>
+                <td id="fname">-</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td id="lname">-</td>
+            </tr>
+            <tr>
+                <td>Event Date</td>
+                <td id="eventDate">-</td>
+            </tr>
+            <tr>
+                <td>Event Time</td>
+                <td id="eventTime">-</td>
+            </tr>
+            <tr>
+                <td>Location</td>
+                <td id="location">-</td>
+            </tr>
+            <tr>
+                <td>Description of Event</td>
+                <td id="description">-</td>
+            </tr>
+            <tr>
+                <td>Event Cost</td>
+                <td id="cost">-</td>
+            </tr>
+            <tr>
+                <td>Grading Format</td>
+                <td id="gradingFormat">-</td>
+            </tr>
+            <tr>
+                <td>Type of Event</td>
+                <td id="typeOfEvent">-</td>
+            </tr>
+            <tr>
+                <td>Employee ID</td>
+                <td id="employeeId">-</td>
+            </tr>
+            <tr>
+                <td>Passing Cutoff</td>
+                <td id="passingCutoff">-</td>
+            </tr>
+            <tr>
+                <td>Urgent</td>
+                <td id="urgent">-</td>
+            </tr>
+            <tr>
+                <td>Final Grade</td>
+                <td id="finalGrade">-</td>
+            </tr>
+            <tr>
+                <td>Work Justification</td>
+                <td id="workJust">-</td>
+            </tr>
+            <tr>
+                <td>Additional Info</td>
+                <td id="addInfo">-</td>
+            </tr>
+            <tr>
+                <td>Reject Form? (Yes / No)</td>
+                <td><input id="rejectForm" type="text"></td>
+            </tr>
+            <tr>
+                <td>Reason for denying this form (if any)</td>
+                <td><input id="denyReason" type="text"></td>
+            </tr>
+            <tr>
+                <td>Supervisor Approval?</td>
+                <td id="dsupApproval">-</td>
+            </tr>
+            <tr>
+                <td>Department Head Approval? (Yes / No)</td>
+                <td><input id="dheadApproval" type="text"></td>
+            </tr>
+            <tr>
+                <td>Benefit Coordinator Approval?</td>
+                <td id="bencoApproval">-</td>
+            </tr>
+        </tr>
+    </table>
+
+
+    <br>
+    <button id="updateButton" style="margin-left: 20px;" onclick="updateForm()">Update Form</button>
+    <br>
+    <br>
+    
+
+<script>
+
+    
+    function populateTable(body) {
+        document.getElementById("formId").innerHTML = body.id
+        document.getElementById("fname").innerHTML = body.fname
+        document.getElementById("lname").innerHTML = body.lname
+        document.getElementById("eventDate").innerHTML = body.eventDate
+        document.getElementById("eventTime").innerHTML = body.eventTime
+        document.getElementById("location").innerHTML = body.location
+        document.getElementById("description").innerHTML = body.description
+        document.getElementById("cost").innerHTML = body.cost
+        document.getElementById("gradingFormat").innerHTML = body.gradingFormat
+        document.getElementById("typeOfEvent").innerHTML = body.typeOfEvent
+        document.getElementById("employeeId").innerHTML = body.employeeId
+        document.getElementById("passingCutoff").innerHTML = body.passingCutoff
+        document.getElementById("urgent").innerHTML = body.urgent
+        document.getElementById("finalGrade").innerHTML = body.finalGrade
+        document.getElementById("workJust").innerHTML = body.workJust
+        document.getElementById("addInfo").innerHTML = body.addInfo
+        // document.getElementById("rejectForm").innerHTML = body.rejectForm
+        // document.getElementById("denyReason").innerHTML = body.denyReason
+        document.getElementById("dsupApproval").innerHTML = body.dsupApproval
+        // document.getElementById("dheadApproval").innerHTML = body.dheadApproval
+        // document.getElementById("bencoApproval").innerHTML = body.bencoApproval
+
+    }
+
+    async function getFormsById() {
+
+        const id = document.getElementById("idInput").value 
+        const url = `http://localhost:5000/login/${id}/form?format=json`
+
+        const httpResponse = await fetch(url)
+        const body = await httpResponse.json()
+
+        populateTable(body)
+
+    }
+
+
+
+    
+    async function updateForm() {
+
+        const rejectFormVal = document.getElementById("rejectForm").value
+        const denyReasonVal = document.getElementById("denyReason").value
+        const dheadApprovalVal = document.getElementById("dheadApproval").value
+
+        console.log(rejectFormVal)
+        console.log(denyReasonVal)
+        console.log(dheadApprovalVal)
+
+        const data = {
+            rejectForm: rejectFormVal,
+            denyReason: denyReasonVal,
+            dheadApproval: dheadApprovalVal
+        }
+        const id = document.getElementById("idInput").value 
+        const url = `http://localhost:5000/login/dhead/${id}/form/update`
+
+        const httpResponse = await fetch(url, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const body = await httpResponse.json();
+
+        console.log(body);
+        if (body) {
+            alert("Form Successfully Updated!")
+        } else {
+            alert("Form Failed to be Updated.")
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
